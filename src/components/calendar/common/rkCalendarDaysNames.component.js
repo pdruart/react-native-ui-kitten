@@ -15,7 +15,7 @@ export class RkCalendarDaysNames extends React.Component {
      */
     daySize: PropTypes.number.isRequired,
     style: PropTypes.shape({
-      container: View.propTypes.style,
+      container: PropTypes.object,
       text: Text.propTypes.style,
     }),
   };
