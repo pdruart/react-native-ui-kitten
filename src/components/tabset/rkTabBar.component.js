@@ -1,11 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import { RkTab } from './rkTab.component';
+import React from "react";
+import PropTypes from "prop-types";
+import { View, ScrollView, TouchableOpacity } from "react-native";
+import { RkTab } from "./rkTab.component";
 
 /**
  * `RkTabBar` is a component that manages `RkTab`s.
@@ -30,35 +26,37 @@ export class RkTabBar extends React.Component {
 
     style: PropTypes.shape({
       container: PropTypes.shape({
-        base: ScrollView.propTypes.contentContainerStyle,
-        scrollable: ScrollView.propTypes.contentContainerStyle,
+        base: PropTypes.object,
+        scrollable: PropTypes.object
       }),
-      tab: RkTab.propTypes.style,
-    }),
+      tab: RkTab.propTypes.style
+    })
   };
   static defaultProps = {
     selectedIndex: 0,
     isScrollable: false,
-    onSelect: (() => null),
+    onSelect: () => null,
 
     style: {
       container: {
         base: {},
-        scrollable: {},
+        scrollable: {}
       },
-      tab: RkTab.defaultProps.style,
-    },
+      tab: RkTab.defaultProps.style
+    }
   };
 
   containerRef = undefined;
 
   shouldComponentUpdate(nextProps) {
-    const isWidthChanged = this.props.componentWidth !== nextProps.componentWidth;
-    const isSelectionChanged = this.props.selectedIndex !== nextProps.selectedIndex;
+    const isWidthChanged =
+      this.props.componentWidth !== nextProps.componentWidth;
+    const isSelectionChanged =
+      this.props.selectedIndex !== nextProps.selectedIndex;
     return isWidthChanged || isSelectionChanged;
   }
 
-  onItemPress = (index) => {
+  onItemPress = index => {
     this.props.onSelect(index);
   };
 
@@ -68,7 +66,8 @@ export class RkTabBar extends React.Component {
    * @param params - object: { index: number, animated: boolean }
    */
   scrollToIndex(params) {
-    const offset = (this.props.componentWidth / this.props.children.length) * params.index;
+    const offset =
+      (this.props.componentWidth / this.props.children.length) * params.index;
     this.scrollToOffset({ offset });
   }
 
@@ -90,13 +89,15 @@ export class RkTabBar extends React.Component {
     this.containerRef.scrollToEnd(params);
   }
 
-  setContainerRef = (ref) => {
+  setContainerRef = ref => {
     this.containerRef = ref;
   };
 
   getContentStyle = (state, style) => ({
-    container: this.props.isScrollable ? style.container.scrollable : style.container.base,
-    tab: this.props.style.tab,
+    container: this.props.isScrollable
+      ? style.container.scrollable
+      : style.container.base,
+    tab: this.props.style.tab
   });
 
   renderItem = (item, index, style) => (
@@ -104,15 +105,16 @@ export class RkTabBar extends React.Component {
       style={{ width: this.props.componentWidth / this.props.children.length }}
       key={index.toString()}
       activeOpacity={0.5}
-      onPress={() => this.onItemPress(index)}>
+      onPress={() => this.onItemPress(index)}
+    >
       {React.cloneElement(item, {
         isSelected: this.props.selectedIndex === index,
-        style,
+        style
       })}
     </TouchableOpacity>
   );
 
-  renderChildComponents = (style) => {
+  renderChildComponents = style => {
     const mapChild = (item, index) => this.renderItem(item, index, style);
     return this.props.children.map(mapChild);
   };
@@ -127,7 +129,8 @@ export class RkTabBar extends React.Component {
           horizontal={true}
           bounces={false}
           scrollEnabled={this.props.isScrollable}
-          showsHorizontalScrollIndicator={false}>
+          showsHorizontalScrollIndicator={false}
+        >
           {this.renderChildComponents(styles.tab)}
         </ScrollView>
       </View>
